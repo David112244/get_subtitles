@@ -104,6 +104,34 @@ async def get_transcription(pack):
     print(f'Поиск субтитров видео {video_id} был выполнен за {np.round(start_time - time(), 2)} секунд')
 
 
+async def get_transcription2(pack):
+    start_time = time()
+    video_id, batch_num = pack
+    url = f'https://www.youtube.com/watch?v={video_id}'
+    folder = f'data/raw_subtitles/batch_{batch_num}/{video_id}'
+
+    # Создайте папку с проверкой
+    await async_os.makedirs(folder, exist_ok=True)
+    print(f'Создана папка: {folder}')
+
+    # Объедините команды в одну строку
+    cmd = f'cd {folder} && /root/yt-dlp --write-auto-subs --sub-lang ru,en --skip-download "{url}"'
+
+    # Выполните команду с явным указанием оболочки
+    process = await asyncio.create_subprocess_shell(
+        cmd,
+        executable='/bin/bash',
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE
+    )
+
+    output, error = await process.communicate()
+
+    if process.returncode != 0:
+        print(f'Ошибка для {video_id}: {error.decode()}')
+    else:
+        print(f'Видео {video_id} обработано за {np.round(start_time - time(), 2)} секунд')
+
 def get_subtitles():
     batch_size = 1000
     all_ids = pd.read_csv('data/all_ids.csv').iloc[:, 0]
@@ -125,7 +153,7 @@ async def get_subtitles_async():
 
     async def worker(pack):
         async with semaphore:
-            await get_transcription(pack)
+            await get_transcription2(pack)
 
     for i in range(len(all_ids) // batch_size + 1):
         start, stop = i * batch_size, (i + 1) * batch_size
