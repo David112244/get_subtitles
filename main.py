@@ -115,7 +115,7 @@ async def get_transcription2(pack):
     print(f'Создана папка: {folder}')
 
     # Объедините команды в одну строку
-    cmd = f'cd {folder} && /root/yt-dlp --write-auto-subs --sub-lang ru,en --skip-download "{url}"'
+    cmd = f'cd {folder} && /root/repo.git/get_subtitles/yt-dlp --write-auto-subs --sub-lang ru,en --skip-download "{url}"'
 
     # Выполните команду с явным указанием оболочки
     process = await asyncio.create_subprocess_shell(
