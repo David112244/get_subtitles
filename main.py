@@ -120,7 +120,7 @@ def get_subtitles():
 async def get_subtitles_async():
     batch_size = 10000
     processes_count = 5
-    all_ids = pd.read_csv('data/all_ids_together.csv').iloc[:, 0][:5]
+    all_ids = pd.read_csv('data/all_ids_together.csv').iloc[:, 0][:20]
     semaphore = asyncio.Semaphore(processes_count)
 
     async def worker(pack):
