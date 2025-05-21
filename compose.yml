@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    user: '0:0'
+    init: true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+    command: python main.py
