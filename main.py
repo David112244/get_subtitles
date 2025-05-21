@@ -86,6 +86,7 @@ async def get_transcription(pack):
     # main_command = 'yt-dlp --write-auto-subs --sub-lang ru,en --skip-download "<URL>"'
     url = f'https://www.youtube.com/watch?v={video_id}'
     folder = f'data/raw_subtitles/batch_{batch_num}/{video_id}'
+
     await async_os.makedirs(folder, exist_ok=True)
     if len(await async_glob(
             f'{folder}/*')) == 2:  # если субтитры отсутствуют, на пост обработке будет видно что папка пуста
@@ -110,12 +111,21 @@ async def get_transcription2(pack):
     url = f'https://www.youtube.com/watch?v={video_id}'
     folder = f'data/raw_subtitles/batch_{batch_num}/{video_id}'
 
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    yt_dlp_path = os.path.join(script_dir, 'yt-dlp')
+    if not os.path.exists(yt_dlp_path):
+        raise FileNotFoundError(f"yt-dlp не найден по пути: {yt_dlp_path}")
+
     # Создайте папку с проверкой
     await async_os.makedirs(folder, exist_ok=True)
     print(f'Создана папка: {folder}')
 
     # Объедините команды в одну строку
-    cmd = f'cd {folder} && ./yt-dlp --write-auto-subs --sub-lang ru,en --skip-download "{url}"'
+    cmd = (
+        f'cd "{folder}" && '
+        f'"{yt_dlp_path}" --ffmpeg-location "{script_dir}" '
+        f'--write-auto-subs --sub-lang ru,en --skip-download "{url}"'
+    )
 
     # Выполните команду с явным указанием оболочки
     process = await asyncio.create_subprocess_shell(
@@ -131,6 +141,7 @@ async def get_transcription2(pack):
         print(f'Ошибка для {video_id}: {error.decode()}')
     else:
         print(f'Видео {video_id} обработано за {np.round(start_time - time(), 2)} секунд')
+
 
 def get_subtitles():
     batch_size = 1000
