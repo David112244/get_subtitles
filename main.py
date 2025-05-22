@@ -164,7 +164,7 @@ async def get_subtitles_async():
 
     async def worker(pack):
         async with semaphore:
-            await get_transcription(pack)
+            await get_transcription2(pack)
 
     for i in range(len(all_ids) // batch_size + 1):
         start, stop = i * batch_size, (i + 1) * batch_size
