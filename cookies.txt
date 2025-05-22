@@ -1,0 +1,4 @@
+.youtube.com    TRUE    /    FALSE    1759233447    _ga    GA1.1.1149577564.1724673447
+.youtube.com    TRUE    /    FALSE    1759411627    _ga_VCGEPY40VB    GS1.1.1724851627.2.0.1724851627.60.0.0
+.youtube.com    TRUE    /    TRUE     1747919401    GPS    1
+.youtube.com    TRUE    /    TRUE     1782477604    PREF    f7=100&tz=Europe.Moscow&f4=4010000

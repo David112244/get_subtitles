@@ -93,7 +93,7 @@ async def get_transcription(pack):
         print('skip')
         return
     commands = [f'cd {folder}',
-                f'yt-dlp --write-auto-subs --sub-lang ru,en --skip-download "{url}"']
+                f'yt-dlp --cookies cookies.txt --write-auto-subs --sub-lang ru,en --skip-download "{url}"']
     process = await asyncio.create_subprocess_shell(
         f'yt-dlp --write-auto-subs --sub-lang ru,en --skip-download "{url}"',
         cwd=folder,  # <--- Важно!
@@ -123,7 +123,7 @@ async def get_transcription2(pack):
     # Объедините команды в одну строку
     cmd = (
         f'cd "{folder}" && '
-        f'"{yt_dlp_path}" --ffmpeg-location "{script_dir}" '
+        f'"{yt_dlp_path}" --cookies cookies.txt --ffmpeg-location "{script_dir}" '
         f'--write-auto-subs --sub-lang ru,en --skip-download "{url}"'
     )
 
@@ -159,12 +159,12 @@ def get_subtitles():
 async def get_subtitles_async():
     batch_size = 10000
     processes_count = 5
-    all_ids = pd.read_csv('data/all_ids_together.csv').iloc[:, 0][:20]
+    all_ids = pd.read_csv('data/all_ids_together.csv').iloc[:, 0][:35]
     semaphore = asyncio.Semaphore(processes_count)
 
     async def worker(pack):
         async with semaphore:
-            await get_transcription2(pack)
+            await get_transcription(pack)
 
     for i in range(len(all_ids) // batch_size + 1):
         start, stop = i * batch_size, (i + 1) * batch_size
