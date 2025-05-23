@@ -121,7 +121,8 @@ async def get_transcription2(pack):
     print(f'Создана папка: {folder}')
 
     # Объедините команды в одну строку
-    cookies_path = os.path.join(script_dir, 'cookies.txt')
+    cookies_path = cookies_path = "/root/repo.git/get_subtitles/cookies.txt"
+
     cmd = (
         f'"{yt_dlp_path}" --cookies "{cookies_path}" --ffmpeg-location "{script_dir}" '
         f'--write-auto-subs --sub-lang ru,en --skip-download "{url}"'
@@ -156,10 +157,10 @@ def get_subtitles():
             get_transcription(pack)
 
 
-async def get_subtitles_async():
+async def get_subtitles_async(): #добавить функцию обновления куки, принцип вызова функции описан в тетради
     batch_size = 10000
-    processes_count = 5
-    all_ids = pd.read_csv('data/all_ids_together.csv').iloc[:, 0][:35]
+    processes_count = 3
+    all_ids = pd.read_csv('data/all_ids_together.csv').iloc[:, 0][:100]
     semaphore = asyncio.Semaphore(processes_count)
 
     async def worker(pack):
