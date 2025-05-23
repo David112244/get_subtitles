@@ -121,7 +121,7 @@ async def get_transcription2(pack):
     print(f'Создана папка: {folder}')
 
     # Объедините команды в одну строку
-    cookies_path = cookies_path = "/root/repo.git/get_subtitles/cookies.txt"
+    cookies_path = cookies_path = "./cookies.txt"
 
     cmd = (
         f'"{yt_dlp_path}" --cookies "{cookies_path}" --ffmpeg-location "{script_dir}" '
