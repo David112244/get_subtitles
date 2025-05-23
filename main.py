@@ -121,7 +121,8 @@ async def get_transcription2(pack):
     print(f'Создана папка: {folder}')
 
     # Объедините команды в одну строку
-    cookies_path = os.path.join(script_dir, 'cookies.txt')
+    cookies_path = "/app/cookies.txt"
+
     cmd = (
         f'"{yt_dlp_path}" --cookies "{cookies_path}" --ffmpeg-location "{script_dir}" '
         f'--write-auto-subs --sub-lang ru,en --skip-download "{url}"'
