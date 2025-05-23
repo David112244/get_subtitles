@@ -9,4 +9,5 @@ services:
       - ./data:/data
       - ./cookies.txt:/app/cookies.txt
 
+
     command: python main.py
