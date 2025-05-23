@@ -7,4 +7,6 @@ services:
       - "8000:8000"
     volumes:
       - ./data:/data
+      - ./cookies.txt:/app/cookies.txt
+
     command: python main.py
