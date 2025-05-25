@@ -124,7 +124,7 @@ async def get_transcription2(pack):
     cookies_path = "/app/cookies.txt"
 
     cmd = (
-        f'"{yt_dlp_path}" --cookies cookies.txt --ffmpeg-location "{script_dir}" '
+        f'"{yt_dlp_path}" --cookies-from-browser --ffmpeg-location "{script_dir}" '
         f'--write-auto-subs --sub-lang ru,en --skip-download "{url}"'
     )
 
