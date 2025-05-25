@@ -124,7 +124,7 @@ async def get_transcription2(pack):
     cookies_path = "/app/cookies.txt"
 
     cmd = (
-        f'"{yt_dlp_path}" --cookies "{cookies_path}" --ffmpeg-location "{script_dir}" '
+        f'"{yt_dlp_path}" --cookies cookies.txt --ffmpeg-location "{script_dir}" '
         f'--write-auto-subs --sub-lang ru,en --skip-download "{url}"'
     )
 
@@ -160,12 +160,12 @@ def get_subtitles():
 async def get_subtitles_async(): #добавить функцию обновления куки, принцип вызова функции описан в тетради
     batch_size = 10000
     processes_count = 3
-    all_ids = pd.read_csv('data/all_ids_together.csv').iloc[:, 0][:100]
+    all_ids = pd.read_csv('data/all_ids_together.csv').iloc[:, 0][:10]
     semaphore = asyncio.Semaphore(processes_count)
 
     async def worker(pack):
         async with semaphore:
-            await get_transcription2(pack)
+            await get_transcription(pack)
 
     for i in range(len(all_ids) // batch_size + 1):
         start, stop = i * batch_size, (i + 1) * batch_size
@@ -176,8 +176,10 @@ async def get_subtitles_async(): #добавить функцию обновле
 
 def run():
     for _ in range(3):
-        asyncio.run(get_subtitles_async())
+        asyncio.run(get_subtitles_async2())
 
 
 if __name__ == '__main__':
+    start = time()
     run()
+    print(f'За {start-time()}')
