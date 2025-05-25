@@ -165,7 +165,7 @@ async def get_subtitles_async(): #добавить функцию обновле
 
     async def worker(pack):
         async with semaphore:
-            await get_transcription(pack)
+            await get_transcription2(pack)
 
     for i in range(len(all_ids) // batch_size + 1):
         start, stop = i * batch_size, (i + 1) * batch_size
@@ -176,7 +176,7 @@ async def get_subtitles_async(): #добавить функцию обновле
 
 def run():
     for _ in range(3):
-        asyncio.run(get_subtitles_async2())
+        asyncio.run(get_subtitles_async())
 
 
 if __name__ == '__main__':
